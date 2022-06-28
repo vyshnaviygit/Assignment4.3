@@ -1,0 +1,93 @@
+<div class="row">
+  <div class="col s12">
+    <div class="card">
+      <div class="card-content white-text">
+        <div class="row">
+          <div class="col s5">
+            <form #employeeForm="ngForm" (ngSubmit)="onSubmit(employeeForm)">
+              <input type="hidden" name="_id" #_id="ngModel" [(ngModel)]="employeeService.selectedEmployee._id">
+              <div class="row">
+                <div class="input-field col s12">
+                  <input type="text" name="name" #name="ngModel" [(ngModel)]="employeeService.selectedEmployee.name"
+                    placeholder="Enter full name" required>
+                  <label>Name :
+                    <label class="red-text">*</label>
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input type="text" name="position" #name="ngModel"
+                    [(ngModel)]="employeeService.selectedEmployee.position" placeholder="Eg : Snr. Developer">
+                  <label>Position :</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input type="text" name="office" #name="ngModel" [(ngModel)]="employeeService.selectedEmployee.office"
+                    placeholder="Enter office location">
+                  <label>Office :</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input type="text" name="salary" #name="ngModel" [(ngModel)]="employeeService.selectedEmployee.salary"
+                    placeholder="Salary per annum">
+                  <label>Salary :</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <button class="btn btn-custom right" type="button" (click)="resetForm(employeeForm)">Reset</button>
+                  <button class="btn btn-custom right" type="submit" [disabled]="!employeeForm.valid">Submit</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col s7" *ngIf="showData">
+            <div class="row">
+              <span class="col s8"></span>
+              <input class="col s4" matInput (keyup)="applyFilter($event)" placeholder="Search columns" #input
+                style="background: white; padding-left:5px; border-radius:10px;">
+            </div>
+
+            <mat-table class="row" [dataSource]="dataSource" matSort #MatTable
+              (matSortChange)="customSort($event, dataSource['data'],MatTable)">
+
+              <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="position">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Position </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="salary">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Salary </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.salary}} </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="action">
+                <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <a class="action-btn" (click)="onEdit(element)">
+                    <i class="material-icons">edit</i>
+                  </a>
+                  <a class="action-btn" (click)="onDelete(element._id,employeeForm)">
+                    <i class="material-icons">delete</i>
+                  </a>
+                </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
